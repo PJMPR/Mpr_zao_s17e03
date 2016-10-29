@@ -1,5 +1,7 @@
 package domain;
 
+import dao.PersonRepository;
+
 /**
  * Hello world!
  *
@@ -8,6 +10,8 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+    	PersonRepository repo = new PersonRepository();
+    	
+        System.out.println( "koniec!" );
     }
 }
