@@ -60,7 +60,7 @@ public class PersonRepository {
 		Person result = null;
 		try{
 			selectById.setInt(1, id);
-			ResultSet rs = selectById.executeQuery(selectByIdSql);
+			ResultSet rs = selectById.executeQuery();
 			while(rs.next()){
 				result = new Person();
 				result.setId(rs.getInt("id"));
