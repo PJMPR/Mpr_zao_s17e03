@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -23,7 +24,18 @@ public class AddressRepository {
 		try {
 			connection = DriverManager.getConnection(url);
 			createTable = connection.createStatement();
-			createTable.executeUpdate(createTableSql);
+
+			boolean tableExists = false;
+			ResultSet rs = connection.getMetaData().getTables(null, null, null, null);
+			while(rs.next()){
+				if("Address".equalsIgnoreCase(rs.getString("TABLE_NAME"))){
+					tableExists=true;
+					break;
+				}
+			}
+			
+			if(!tableExists)
+				createTable.executeUpdate(createTableSql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
