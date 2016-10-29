@@ -16,6 +16,9 @@ public class App
     	jan.setAge(30);
     	
     	repo.add(jan);
+    	Person janFromDb = repo.get(0);
+    	System.out.print(jan.getName().equals(janFromDb.getName()));
     	System.out.print("Koniec");
+    	
     }
 }

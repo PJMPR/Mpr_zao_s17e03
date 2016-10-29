@@ -25,7 +25,10 @@ public class PersonRepository {
 
 	private String insertSql ="INSERT INTO Person (name, surname, age) VALUES(?,?,?)";
 	
+	private PreparedStatement selectById;
 	
+	private String selectByIdSql = "SELECT * FROM Person"
+			+ " WHERE id = ?"; 
 	
 	
 	public PersonRepository(){
@@ -34,6 +37,7 @@ public class PersonRepository {
 			connection = DriverManager.getConnection(url);
 			createTable = connection.createStatement();
 			insert = connection.prepareStatement(insertSql);
+			selectById = connection.prepareStatement(selectByIdSql);
 			
 			boolean tableExists = false;
 			ResultSet rs = connection.getMetaData().getTables(null, null, null, null);
@@ -52,6 +56,28 @@ public class PersonRepository {
 		}
 		
 	}
+	public Person get(int id){
+		Person result = null;
+		try{
+			selectById.setInt(1, id);
+			ResultSet rs = selectById.executeQuery(selectByIdSql);
+			while(rs.next()){
+				result = new Person();
+				result.setId(rs.getInt("id"));
+				result.setName(rs.getString("name"));
+				result.setSurname(rs.getString("surname"));
+				return result;
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	// public List<Person> getAll()
+	// public void delete(Person p)
+	// public List<Person> getByName(String name)
+	
 	
 	public void add(Person person){
 		try{
