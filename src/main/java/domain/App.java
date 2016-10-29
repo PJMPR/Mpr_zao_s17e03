@@ -13,7 +13,13 @@ public class App
     {
     	PersonRepository repo = new PersonRepository();
     	AddressRepository addressRepo = new AddressRepository();
+    	Person jan = new Person();
     	
+    	jan.setName("jan");
+    	jan.setSurname("kowalski");
+    	jan.setAge(30);
+    	
+    	repo.add(jan);
         System.out.println( "koniec!" );
     }
 }
