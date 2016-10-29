@@ -1,13 +1,11 @@
 package domain;
 
-/**
- * Hello world!
- *
- */
+import dao.PersonRepository;
+
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+    	PersonRepository repo = new PersonRepository();
     }
 }
