@@ -50,6 +50,12 @@ public class PersonRepository {
 		}
 	}
 	
+	//public void delete(Person p)
+	//public void update(Person p)
+	//public Person get(int id)
+	//public List<Person> getAll()
+	// https://github.com/KubaNeumann/jdbcdemo
+	
 	public void add(Person p){
 		try{
 			insert.setString(1, p.getName());
