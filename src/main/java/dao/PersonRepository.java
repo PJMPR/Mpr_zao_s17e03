@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import domain.Person;
 
@@ -22,8 +24,22 @@ public class PersonRepository {
 			+ ")";
 	private String insertSql = "INSERT INTO person(name, surname, age) VALUES (?,?,?)";
 	
+	private String deleteSql = "DELETE FROM person WHERE name=? AND surname=?";
+	
+	private String updateSql = "UPDATE person SET name=?,surname=?,age=? WHERE id=?";
+	
+	private String getPersonIdSql = "SELECT id,name,surname,age FROM person WHERE id=?";
+	
+	private String getAllSql = "SELECT id,name,surname,age FROM person";
+	
 	Statement createTable;
+	Statement getAllPerson;
 	PreparedStatement insert;
+	PreparedStatement delete;
+	PreparedStatement update;
+	PreparedStatement getPersonId;
+
+
 	
 	public PersonRepository(){
 		
@@ -31,8 +47,7 @@ public class PersonRepository {
 			
 			connection = DriverManager.getConnection(url);
 			createTable = connection.createStatement();
-			insert = connection.prepareStatement(insertSql);
-			
+						
 			ResultSet rs = connection.getMetaData().getTables(null, null, null, null);
 			boolean tableExists = false;
 			while(rs.next()){
@@ -43,7 +58,12 @@ public class PersonRepository {
 			}
 			if(!tableExists)
 				createTable.executeUpdate(createTableSql);
-				
+			
+			insert = connection.prepareStatement(insertSql);
+			delete = connection.prepareStatement(deleteSql);
+			update = connection.prepareStatement(updateSql);
+			getPersonId = connection.prepareStatement(getPersonIdSql);
+			getAllPerson = connection.createStatement();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -54,7 +74,7 @@ public class PersonRepository {
 	//public void update(Person p)
 	//public Person get(int id)
 	//public List<Person> getAll()
-	// https://github.com/KubaNeumann/jdbcdemo
+
 	
 	public void add(Person p){
 		try{
@@ -65,6 +85,67 @@ public class PersonRepository {
 		}catch(SQLException ex){
 			ex.printStackTrace();
 		}
+	}
+	
+	public void delete(Person p){
+		try{
+			delete.setString(1, p.getName());
+			delete.setString(2, p.getSurname());
+			delete.executeUpdate();
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void update(Person p){
+		try{
+			update.setString(1, p.getName());
+			update.setString(2, p.getSurname());
+			update.setInt(3, p.getAge());
+			update.setInt(4, p.getId());
+			update.executeUpdate();
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public Person getPersonId(int id){
+		Person p = new Person();
+		try{
+			getPersonId.setInt(1,id);
+			ResultSet rs = getPersonId.executeQuery();			
+			while (rs.next()){
+				p.setId(rs.getInt("id"));
+			
+			p.setName(rs.getString("name"));
+			p.setSurname(rs.getString("surname"));
+			p.setAge(rs.getInt("age"));}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		return p;
+
+	}
+	
+	public List<Person> getAllPersons() {
+		List<Person> persons = new ArrayList<Person>();
+
+		try {
+			ResultSet rs = getAllPerson.executeQuery(getAllSql);
+
+			while (rs.next()) {
+				Person p = new Person();
+				p.setId(rs.getInt("id"));
+				p.setName(rs.getString("name"));
+				p.setSurname(rs.getString("surname"));
+				p.setAge(rs.getInt("age"));
+				persons.add(p);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return persons;
 	}
 }
 
