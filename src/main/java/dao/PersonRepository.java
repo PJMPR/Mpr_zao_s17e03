@@ -96,7 +96,25 @@ public class PersonRepository {
         statement.setInt(1, p.getId());
         statement.executeUpdate();
     }
-    // public List<Person> getByName(String name)
+    public List<Person> getByName(String name) throws SQLException {
+        List<Person> people_with_matching_names = new ArrayList<Person>();
+        String sql_text = "SELECT * FROM Person WHERE name like ?";
+        PreparedStatement statement = connection.prepareStatement(sql_text);
+
+        statement.setString(1, name);
+        ResultSet rs = statement.executeQuery();
+
+        Person a_person = null;
+        while (rs.next()) {
+            a_person = new Person();
+            a_person.setId(rs.getInt("id"));
+            a_person.setName(rs.getString("name"));
+            a_person.setSurname(rs.getString("surname"));
+            people_with_matching_names.add(a_person);
+        }
+
+        return people_with_matching_names;
+    }
 
 
     public void add(Person person){
