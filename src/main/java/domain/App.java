@@ -16,6 +16,7 @@ public class App
     {
     	PersonRepository repo = new PersonRepository();
     	AddressRepository addressRepo = new AddressRepository();
+    	
     	Person jan = new Person();
     	Person stefan = new Person();
     	Person jacek = new Person();
@@ -63,6 +64,7 @@ public class App
     	addressRepo.add(adres_3);
     	
     	//repo.delete(stefan);
+    	//addressRepo.delete(adres_3);
     	
     	List<Person> people = repo.getAllPersons();
     	for(Person person: people){
@@ -71,11 +73,16 @@ public class App
     	
     	List<Address> addresses = addressRepo.getAllAddress();
         for(Address address: addresses){
-        	System.out.println("id: "+address.getId()+"\tulica: "+address.getStreetName()+"\tnumer"+address.getStreetNumber()+"/"+address.getHouseNumber()
-        	+"\tKod pocztowy: "+address.getPostcode()+"\tMiejscowość: "+address.getPostcode());
+    	     	System.out.println("id: "+address.getId()+"\tulica: "+address.getStreetName()+"\tnumer"+address.getStreetNumber()+"/"+address.getHouseNumber()
+        	+"\tKod pocztowy: "+address.getPostcode()+"\tMiejscowość: "+address.getCity());
         }
+    	
+    	Person person1=repo.getPersonId(3);
+    	System.out.println("Osoba o id: "+person1.getId()+"\tImię: "+person1.getName()+"\tNazwisko: "+person1.getSurname()+"\tWiek: "+person1.getAge());
+    	
+    	Address adres1=addressRepo.getAddressId(0);
+    	System.out.println("Adres o id: "+adres1.getId()+"\tMiejscowość: "+adres1.getCity()+"\tUlica: "+adres1.getStreetName()+"\tNumer: "+adres1.getStreetNumber());
+    	
     	System.out.println( "koniec!" );
-    	Person person1=repo.getPersonId(77);
-    	System.out.println("id: "+person1.getId()+"\tname: "+person1.getName()+"\tsurname: "+person1.getSurname()+"\tage: "+person1.getAge());
     }
 }

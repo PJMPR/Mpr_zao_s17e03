@@ -22,15 +22,15 @@ public class AddressRepository {
 			+ "streetNumber bigint,"
 			+ "houseNumber VARCHAR(10),"
 			+ "city VARCHAR(50),"
-			+ "postcode VARCHAR(5)"			
-			+ ")";
+			+ "postcode VARCHAR(10)"			
+			+ ")";			
 	private String insertSql = "INSERT INTO address(streetName, streetNumber, houseNumber, city, postcode) VALUES (?,?,?,?,?)";
 	
 	private String deleteSql = "DELETE FROM address WHERE streetName=? AND streetNumber=? AND houseNumber=? AND city=?";
 	
-	private String updateSql = "UPDATE address SET streetName=?, streetNumber=?, nouseNumber=?, city=?, postcode=? WHERE id=?";
+	private String updateSql = "UPDATE address SET streetName=?, streetNumber=?, houseNumber=?, city=?, postcode=? WHERE id=?";
 	
-	private String getAddressIdSql = "SELECT streetName, streetNumber, houseNumber, city, postcode FROM address WHERE id=?";
+	private String getAddressIdSql = "SELECT id,streetName, streetNumber, houseNumber, city, postcode FROM address WHERE id=?";
 	
 	private String getAllSql = "SELECT id,streetName, streetNumber, houseNumber, city, postcode FROM address";
 	
@@ -40,7 +40,6 @@ public class AddressRepository {
 	PreparedStatement delete;
 	PreparedStatement update;
 	PreparedStatement getAddressId;
-	
 	
 	
 	public AddressRepository(){
@@ -58,12 +57,19 @@ public class AddressRepository {
 				}
 			}
 			if(!tableExists)
-				createTable.executeUpdate(createTableSql);
+			createTable.executeUpdate(createTableSql);
+			
+			insert = connection.prepareStatement(insertSql);
+			delete = connection.prepareStatement(deleteSql);
+			update = connection.prepareStatement(updateSql);
+			getAddressId = connection.prepareStatement(getAddressIdSql);
+			getAllAddress = connection.createStatement();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
 	public void add(Address a){
 		try{
 			insert.setString(1, a.getStreetName());
