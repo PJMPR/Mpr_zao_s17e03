@@ -2,9 +2,14 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import domain.Address;
 
 public class AddressRepository {
 
@@ -19,8 +24,23 @@ public class AddressRepository {
 			+ "city VARCHAR(50),"
 			+ "postcode VARCHAR(5)"			
 			+ ")";
+	private String insertSql = "INSERT INTO address(streetName, streetNumber, houseNumber, city, postcode) VALUES (?,?,?,?,?)";
+	
+	private String deleteSql = "DELETE FROM address WHERE streetName=? AND streetNumber=? AND houseNumber=? AND city=?";
+	
+	private String updateSql = "UPDATE address SET streetName=?, streetNumber=?, nouseNumber=?, city=?, postcode=? WHERE id=?";
+	
+	private String getAddressIdSql = "SELECT streetName, streetNumber, houseNumber, city, postcode FROM address WHERE id=?";
+	
+	private String getAllSql = "SELECT id,streetName, streetNumber, houseNumber, city, postcode FROM address";
 	
 	Statement createTable;
+	Statement getAllAddress;
+	PreparedStatement insert;
+	PreparedStatement delete;
+	PreparedStatement update;
+	PreparedStatement getAddressId;
+	
 	
 	
 	public AddressRepository(){
@@ -43,6 +63,84 @@ public class AddressRepository {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	public void add(Address a){
+		try{
+			insert.setString(1, a.getStreetName());
+			insert.setInt(2, a.getStreetNumber());
+			insert.setString(3, a.getHouseNumber());
+			insert.setString(4, a.getCity());
+			insert.setString(5, a.getPostcode());
+			insert.executeUpdate();
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void delete(Address a){
+		try{
+			delete.setString(1, a.getStreetName());
+			delete.setInt(2, a.getStreetNumber());
+			delete.setString(3, a.getHouseNumber());
+			delete.setString(4, a.getCity());
+			delete.executeUpdate();
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void update(Address a){
+		try{
+			update.setString(1, a.getStreetName());
+			update.setInt(2, a.getStreetNumber());
+			update.setString(3, a.getHouseNumber());
+			update.setString(4, a.getCity());
+			update.setString(5, a.getPostcode());
+			update.setInt(6, a.getId());
+			update.executeUpdate();
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public Address getAddressId(int id){
+		Address a = new Address();
+		try{			
+			getAddressId.setInt(1,id);
+			ResultSet rs = getAddressId.executeQuery();			
+			while (rs.next()){
+				a.setId(rs.getInt("id"));
+				a.setStreetName(rs.getString("streetName"));
+				a.setStreetNumber(rs.getInt("streetNumber"));
+				a.setHouseNumber(rs.getString("houseNumber"));
+				a.setCity(rs.getString("city"));
+				a.setPostcode(rs.getString("postcode"));
+		}}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		return a;
+
+	}
+	
+	public List<Address> getAllAddress() {
+		List<Address> addresses = new ArrayList<Address>();
+		try {
+			ResultSet rs = getAllAddress.executeQuery(getAllSql);
+			while (rs.next()) {
+				Address a = new Address();
+				a.setId(rs.getInt("id"));
+				a.setStreetName(rs.getString("streetName"));
+				a.setStreetNumber(rs.getInt("streetNumber"));
+				a.setHouseNumber(rs.getString("houseNumber"));
+				a.setCity(rs.getString("city"));
+				a.setPostcode(rs.getString("postcode"));
+				addresses.add(a);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return addresses;
 	}
 	
 }
