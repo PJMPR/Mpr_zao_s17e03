@@ -72,7 +72,24 @@ public class PersonRepository {
         return null;
     }
 
-    // public List<Person> getAll()
+    public List<Person> getAll() throws SQLException {
+        List<Person> all_the_people = new ArrayList<Person>();
+
+        String sql_text = "SELECT * FROM Person";
+        PreparedStatement statement = connection.prepareStatement(sql_text);
+        ResultSet rs = statement.executeQuery();
+
+        Person person = null;
+        while (rs.next()) {
+            person = new Person();
+            person.setId(rs.getInt("id"));
+            person.setName(rs.getString("name"));
+            person.setSurname(rs.getString("surname"));
+            all_the_people.add(person);
+        }
+
+        return all_the_people;
+    }
     // public void delete(Person p)
     // public List<Person> getByName(String name)
 
