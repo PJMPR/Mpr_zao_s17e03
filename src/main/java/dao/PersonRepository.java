@@ -90,7 +90,12 @@ public class PersonRepository {
 
         return all_the_people;
     }
-    // public void delete(Person p)
+    public void delete(Person p) throws SQLException {
+        String sql_text = "DELETE FROM Person WHERE id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql_text);
+        statement.setInt(1, p.getId());
+        statement.executeUpdate();
+    }
     // public List<Person> getByName(String name)
 
 
