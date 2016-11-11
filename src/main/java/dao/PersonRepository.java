@@ -116,10 +116,9 @@ public class PersonRepository {
 			ResultSet rs = getPersonId.executeQuery();			
 			while (rs.next()){
 				p.setId(rs.getInt("id"));
-			
-			p.setName(rs.getString("name"));
-			p.setSurname(rs.getString("surname"));
-			p.setAge(rs.getInt("age"));}
+				p.setName(rs.getString("name"));
+				p.setSurname(rs.getString("surname"));
+				p.setAge(rs.getInt("age"));}
 		}catch(SQLException ex){
 			ex.printStackTrace();
 		}
@@ -129,7 +128,6 @@ public class PersonRepository {
 	
 	public List<Person> getAllPersons() {
 		List<Person> persons = new ArrayList<Person>();
-
 		try {
 			ResultSet rs = getAllPerson.executeQuery(getAllSql);
 
