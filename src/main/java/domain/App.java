@@ -27,6 +27,18 @@ public class App
     	repo.add(ola);
     	repo.add(ala);
     	
+    	Address firstAddress = new Address();
+    	firstAddress.setCity("Tczew");
+    	firstAddress.setStreet("Grunwaldzka");
+    	firstAddress.setHouseNumber(5);
+    	Address secondAddress = new Address();
+    	secondAddress.setCity("Gdańsk");
+    	secondAddress.setStreet("Gdańska");
+    	secondAddress.setHouseNumber(22);
+
+    	addressRepo.add(firstAddress);
+    	addressRepo.add(secondAddress);
+    	
     	Person janFromDb = repo.get(0);
     	System.out.print(jan.getName().equals(janFromDb.getName()));
     	

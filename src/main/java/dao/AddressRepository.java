@@ -2,14 +2,21 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import domain.Address;
 
 public class AddressRepository {
+
 	private String url = "jdbc:hsqldb:hsql://localhost/workdb";
 	private Connection connection;
 	private Statement createTable;
+	private PreparedStatement insert;
 	
 	private String createTableSql = (
         "CREATE TABLE Address(" +
@@ -19,6 +26,19 @@ public class AddressRepository {
             "house_number INT" +
         ")"
     );
+	
+	private String insertSql ="INSERT INTO Address (city, street, house_number) VALUES(?,?,?)";
+	
+	private String deleteSql = "DELETE FROM Address WHERE id=?";
+	
+	private String selectAllSql = "SELECT * FROM Address"; 
+	
+	private PreparedStatement selectById;
+	private PreparedStatement delete;
+	private PreparedStatement selectAll;
+	
+	private String selectByIdSql = "SELECT * FROM Address"
+			+ " WHERE id = ?";
 	
 	public AddressRepository() {
 		try {
@@ -36,8 +56,74 @@ public class AddressRepository {
 			
 			if(!tableExists)
 				createTable.executeUpdate(createTableSql);
+			
+			insert = connection.prepareStatement(insertSql);
+			selectById = connection.prepareStatement(selectByIdSql);
+			delete = connection.prepareStatement(deleteSql);
+			selectAll = connection.prepareStatement(selectAllSql);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public Address get(int id){
+		Address result = null;
+		try{
+			selectById.setInt(1, id);
+			ResultSet rs = selectById.executeQuery();
+			while(rs.next()){
+				result = new Address();
+				result.setId(rs.getInt("id"));
+				result.setCity(rs.getString("city"));
+				result.setStreet(rs.getString("street"));
+				result.setHouseNumber(rs.getInt("house_number"));
+				return result;
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<Address> getAll(){
+		List<Address> result = null;
+		try{
+			
+			ResultSet rs = selectAll.executeQuery();
+			result = new ArrayList<Address>();
+			while(rs.next()){
+				Address p = new Address();
+				p.setId(rs.getInt("id"));
+				p.setCity(rs.getString("city"));
+				p.setStreet(rs.getString("street"));
+				p.setHouseNumber(rs.getInt("house_number"));
+				result.add(p);
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		return result;
+	}
+	
+	public void delete(Address p){
+		try{
+			
+			delete.setInt(1, p.getId());
+			delete.executeUpdate();
+			
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void add(Address address){
+		try{
+			insert.setString(1, address.getCity());
+			insert.setString(2, address.getStreet());
+			insert.setInt(3, address.getHouseNumber());
+			insert.executeUpdate();
+		}catch(SQLException ex){
+			ex.printStackTrace();
 		}
 	}
 }
