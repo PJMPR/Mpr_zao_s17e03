@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.mappers.IMapResultSetToEntity;
 import domain.Address;
 
 public class AddressRepository {
@@ -39,6 +40,7 @@ public class AddressRepository {
 	
 	private String selectByIdSql = "SELECT * FROM Address"
 			+ " WHERE id = ?";
+	IMapResultSetToEntity<Address> mapper;
 	
 	public AddressRepository() {
 		try {
@@ -67,17 +69,11 @@ public class AddressRepository {
 	}
 	
 	public Address get(int id){
-		Address result = null;
 		try{
 			selectById.setInt(1, id);
 			ResultSet rs = selectById.executeQuery();
 			while(rs.next()){
-				result = new Address();
-				result.setId(rs.getInt("id"));
-				result.setCity(rs.getString("city"));
-				result.setStreet(rs.getString("street"));
-				result.setHouseNumber(rs.getInt("house_number"));
-				return result;
+				return mapper.map(rs);
 			}
 		}catch(SQLException ex){
 			ex.printStackTrace();
@@ -92,12 +88,7 @@ public class AddressRepository {
 			ResultSet rs = selectAll.executeQuery();
 			result = new ArrayList<Address>();
 			while(rs.next()){
-				Address p = new Address();
-				p.setId(rs.getInt("id"));
-				p.setCity(rs.getString("city"));
-				p.setStreet(rs.getString("street"));
-				p.setHouseNumber(rs.getInt("house_number"));
-				result.add(p);
+				result.add(mapper.map(rs));
 			}
 		}catch(SQLException ex){
 			ex.printStackTrace();
