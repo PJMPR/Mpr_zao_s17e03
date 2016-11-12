@@ -22,10 +22,29 @@ public class App
     	ala.setName("Ala");
     	ala.setSurname("Kowalska");
     	ala.setAge(44);
+    	
+    	Address adres1 = new Address();
+    	adres1.setCity("Gdańsk");
+    	adres1.setStreet("Długa");
+    	adres1.setHouseNumber(12);
+    	
+    	Address adres2 = new Address();
+    	adres2.setCity("Gdańsk");
+    	adres2.setStreet("Jakaś");
+    	adres2.setHouseNumber(32);
 
+    	Address adres3 = new Address();
+    	adres3.setCity("Płock");
+    	adres3.setStreet("Ciemna");
+    	adres3.setHouseNumber(32);
+    	
     	repo.add(jan);
     	repo.add(ola);
     	repo.add(ala);
+    	
+    	addressRepo.add(adres1);
+    	addressRepo.add(adres2);
+    	addressRepo.add(adres3);
     	
     	Person janFromDb = repo.get(0);
     	System.out.print(jan.getName().equals(janFromDb.getName()));
