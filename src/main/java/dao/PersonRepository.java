@@ -32,11 +32,14 @@ public class PersonRepository {
 	private String selectAllSql = "SELECT * FROM Person"; 
 	
 	private PreparedStatement selectById;
+	private PreparedStatement selectByAddress;
 	private PreparedStatement delete;
 	private PreparedStatement selectAll;
 	
 	private String selectByIdSql = "SELECT * FROM Person"
 			+ " WHERE id = ?"; 
+	private String selectByAddressSql = "SELECT * FROM Person"
+			+ " WHERE address_id = ?"; 
 	
 	
 	public PersonRepository(){
@@ -60,6 +63,7 @@ public class PersonRepository {
 
 			insert = connection.prepareStatement(insertSql);
 			selectById = connection.prepareStatement(selectByIdSql);
+			selectByAddress = connection.prepareStatement(selectByAddressSql);
 			delete = connection.prepareStatement(deleteSql);
 			selectAll = connection.prepareStatement(selectAllSql);
 			
@@ -68,10 +72,28 @@ public class PersonRepository {
 		}
 		
 	}
+
 	public Person get(int id){
 		Person result = null;
 		try{
 			selectById.setInt(1, id);
+			ResultSet rs = selectById.executeQuery();
+			while(rs.next()){
+				result = new Person();
+				result.setId(rs.getInt("id"));
+				result.setName(rs.getString("name"));
+				result.setSurname(rs.getString("surname"));
+				return result;
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	public Person getByAddress(int address_id){
+		Person result = null;
+		try{
+			selectByAddress.setInt(1, address_id);
 			ResultSet rs = selectById.executeQuery();
 			while(rs.next()){
 				result = new Person();
