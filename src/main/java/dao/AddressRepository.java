@@ -24,7 +24,12 @@ public class AddressRepository {
     );
 
     private PreparedStatement selectById;
+    private PreparedStatement deleteById;
+	private PreparedStatement insert;
+
     private String selectByIdSql = "select * from Address where id = ?";
+	private String insertSql ="INSERT INTO Address (city, street, house_number) VALUES(?,?,?)";
+	private String deleteSql = "DELETE FROM Address WHERE id = ?";
 	
 	public AddressRepository() {
 		try {
@@ -32,6 +37,8 @@ public class AddressRepository {
 			createTable = connection.createStatement();
 
             selectById = connection.prepareStatement(selectByIdSql);
+            deleteById = connection.prepareStatement(deleteSql);
+            insert = connection.prepareStatement(insertSql);
 
 			boolean tableExists = false;
 			ResultSet rs = connection.getMetaData().getTables(null, null, null, null);
@@ -66,5 +73,25 @@ public class AddressRepository {
 			ex.printStackTrace();
 		}
 		return null;
+	}
+	
+	public void delete(Address p){
+		try{
+			deleteById.setInt(1, p.getId());
+			deleteById.executeUpdate();
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void add(Address address){
+		try{
+            insert.setString(1, address.getCity());
+            insert.setString(2, address.getStreet());
+            insert.setInt(3, address.getHouseNumber());
+            insert.executeUpdate();
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
 	}
 }
