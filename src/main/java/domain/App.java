@@ -22,15 +22,23 @@ public class App
     	ala.setName("Ala");
     	ala.setSurname("Kowalska");
     	ala.setAge(44);
+    	
+    	Address ad1 = new Address();
+    	ad1.setCity("Manchester");
+    	ad1.setStreet("Street1");
+    	ad1.setHouseNumber(1);
 
     	repo.add(jan);
     	repo.add(ola);
     	repo.add(ala);
+    	addressRepo.add(ad1);
     	
-    	Person janFromDb = repo.get(0);
-    	System.out.print(jan.getName().equals(janFromDb.getName()));
+    	//Person janFromDb = repo.get(0);
+    	//System.out.print(jan.getName().equals(janFromDb.getName()));
+    	//Address ad1FromDb = addressRepo.get(0);
+    	//System.out.println();
     	
-    	repo.delete(janFromDb);
+    	//repo.delete(janFromDb);
     	
     	for(Person p: repo.getAll()){
 
