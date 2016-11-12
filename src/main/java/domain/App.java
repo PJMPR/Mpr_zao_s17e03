@@ -14,10 +14,29 @@ public class App
     	jan.setName("Jan");
     	jan.setSurname("Kowalski");
     	jan.setAge(30);
-    	
+    	Person ola = new Person();
+    	ola.setName("Ola");
+    	ola.setSurname("Kowalska");
+    	ola.setAge(22);
+    	Person ala = new Person();
+    	ala.setName("Ala");
+    	ala.setSurname("Kowalska");
+    	ala.setAge(44);
+
     	repo.add(jan);
+    	repo.add(ola);
+    	repo.add(ala);
+    	
     	Person janFromDb = repo.get(0);
     	System.out.print(jan.getName().equals(janFromDb.getName()));
+    	
+    	repo.delete(janFromDb);
+    	
+    	for(Person p: repo.getAll()){
+
+        	System.out.println(p.getId()+" "+p.getName() +" "+p.getAge());
+    	}
+    	
     	System.out.print("Koniec");
     	
     }
