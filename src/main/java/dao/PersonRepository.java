@@ -10,38 +10,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.mappers.IMapResultSetToEntity;
+import dao.uow.IUnitOfWork;
+import domain.Entity;
 import domain.Person;
 
 public class PersonRepository extends RepositoryBase<Person>{
 	IMapResultSetToEntity<Person> mapper;
 	
 	public PersonRepository(Connection connection, 
-			IMapResultSetToEntity<Person> mapper){
-		super(connection,mapper);
+			IMapResultSetToEntity<Person> mapper,
+			IUnitOfWork uow){
+		super(connection,mapper,uow);
 	}
 	
-	
-	public void delete(Person p){
-		try{
-			
-			delete.setInt(1, p.getId());
-			delete.executeUpdate();
-			
-		}catch(SQLException ex){
-			ex.printStackTrace();
-		}
-	}
-	
-	public void add(Person person){
-		try{
+	protected void setUpInsert(Entity entity) throws SQLException {
+		Person person = (Person)entity;
 		insert.setString(1, person.getName());
 		insert.setString(2, person.getSurname());
 		insert.setInt(3, person.getAge());
-		insert.executeUpdate();
-		}catch(SQLException ex){
-			ex.printStackTrace();
-		}
 	}
+	
+	protected void setUpUpdate(Entity entity) throws SQLException {
+		Person p = (Person)entity;
+		update.setString(1, p.getName());
+		update.setString(2, p.getSurname());
+		update.setInt(3, p.getAge());
+		update.setInt(4, p.getId());
+	}
+	
+	
 	@Override
 	protected String getTableName() {
 		return "Person";
@@ -60,18 +57,10 @@ public class PersonRepository extends RepositoryBase<Person>{
 		return "INSERT INTO Person (name, surname, age) VALUES(?,?,?)";
 		
 	}
-	@Override
-	protected String getDeleteQuery() {
-		return "DELETE FROM Person WHERE id=?";
+	
+	protected String getUpdateQuery(){
+		return "UPDATE person SET (name,surname,age)=(?,?,?) WHERE id=?";
 	}
-	@Override
-	protected String getSelectByIdQuery() {
-		return "SELECT * FROM Person"
-				+ " WHERE id = ?"; 
-	}
-	@Override
-	protected String getSelectAllQuery() {
-		return "SELECT * FROM Person";
-	}
+
 	
 }

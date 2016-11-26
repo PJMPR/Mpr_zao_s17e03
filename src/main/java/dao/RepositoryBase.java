@@ -10,9 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.mappers.IMapResultSetToEntity;
+import dao.uow.IUnitOfWork;
+import dao.uow.IUnitOfWorkRepository;
+import domain.Entity;
+import domain.IHaveId;
 import domain.Person;
 
-public abstract class RepositoryBase<TEntity> {
+public abstract class RepositoryBase<TEntity extends Entity>
+	implements IUnitOfWorkRepository{
 
 
 	protected Connection connection;
@@ -25,12 +30,15 @@ public abstract class RepositoryBase<TEntity> {
 	protected PreparedStatement selectById;
 	protected PreparedStatement delete;
 	protected PreparedStatement selectAll;
+	protected PreparedStatement update;
+	protected IUnitOfWork uow;
 	
 	protected RepositoryBase(Connection conection,
-			IMapResultSetToEntity<TEntity> mapper){
-		
+			IMapResultSetToEntity<TEntity> mapper, 
+			IUnitOfWork uow){
 		try {
-
+			connection.setAutoCommit(false);
+			this.uow = uow;
 			this.mapper = mapper;
 			this.connection = connection;
 			createTable = connection.createStatement();
@@ -39,7 +47,7 @@ public abstract class RepositoryBase<TEntity> {
 			selectById = connection.prepareStatement(getSelectByIdQuery());
 			delete = connection.prepareStatement(getDeleteQuery());
 			selectAll = connection.prepareStatement(getSelectAllQuery());
-			
+			update = connection.prepareStatement(getUpdateQuery());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -62,10 +70,68 @@ public abstract class RepositoryBase<TEntity> {
 	protected abstract String getTableName();
 	protected abstract String getCreateTableQuery();
 	protected abstract String getInsertQuery();
-	protected abstract String getDeleteQuery();
-	protected abstract String getSelectByIdQuery();
-	protected abstract String getSelectAllQuery();
+	protected abstract String getUpdateQuery();
+	protected abstract void setUpInsert(Entity person) throws SQLException;
+	protected abstract void setUpUpdate(Entity p) throws SQLException;
+
+
+	protected String getDeleteQuery() {
+		return "DELETE FROM "
+				+ getTableName()
+				+ " WHERE id=?";
+	}
+	protected String getSelectByIdQuery() {
+		return "SELECT * FROM "
+				+ getTableName()
+				+ " WHERE id = ?"; 
+	}
+	protected String getSelectAllQuery() {
+		return "SELECT * FROM "
+				+ getTableName();
+	}
+
+	public void persistDelete(Entity p){
+		try{
+			delete.setInt(1, p.getId());
+			delete.executeUpdate();
+			
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
 	
+	public void delete(TEntity entity){
+		uow.markAsDeleted(entity, this);
+	}
+
+	public void persistUpdate(Entity p){
+		try{
+			setUpUpdate(p);
+			update.executeUpdate();
+		}
+		catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void update(TEntity p){
+		uow.markAsChanged(p, this);
+	}
+
+	public void persistInsert(Entity person){
+		try{
+		setUpInsert(person);
+		insert.executeUpdate();
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void add(TEntity entity){
+		uow.markAsNew(entity, this);
+	}
+	
+
 	public TEntity get(int id){
 		try{
 			selectById.setInt(1, id);
