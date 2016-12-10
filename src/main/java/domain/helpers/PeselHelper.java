@@ -8,10 +8,10 @@ public class PeselHelper {
         if (!pesel.matches("^[0-9]{11}$")) {
             return false;
         }
-        return checkSum(pesel);
+        return checksum(pesel);
     }
 
-    private boolean checkSum(String pesel) {
+    private static boolean checksum(String pesel) {
         int sum = (
                 1 * pesel.codePointAt(0)
               + 3 * pesel.codePointAt(1)
