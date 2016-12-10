@@ -13,21 +13,21 @@ public class PeselHelper {
 
     private static boolean checksum(String pesel) {
         int sum = (
-                1 * Integer.parseInt(pesel.codePointAt(0))
-              + 3 * Integer.parseInt(pesel.codePointAt(1))
-              + 7 * Integer.parseInt(pesel.codePointAt(2))
-              + 9 * Integer.parseInt(pesel.codePointAt(3))
-              + 1 * Integer.parseInt(pesel.codePointAt(4))
-              + 3 * Integer.parseInt(pesel.codePointAt(5))
-              + 7 * Integer.parseInt(pesel.codePointAt(6))
-              + 9 * Integer.parseInt(pesel.codePointAt(7))
-              + 1 * Integer.parseInt(pesel.codePointAt(8))
-              + 3 * Integer.parseInt(pesel.codePointAt(9))
+                1 * Integer.parseInt(Character.toString(pesel.charAt(0)))
+              + 3 * Integer.parseInt(Character.toString(pesel.charAt(1)))
+              + 7 * Integer.parseInt(Character.toString(pesel.charAt(2)))
+              + 9 * Integer.parseInt(Character.toString(pesel.charAt(3)))
+              + 1 * Integer.parseInt(Character.toString(pesel.charAt(4)))
+              + 3 * Integer.parseInt(Character.toString(pesel.charAt(5)))
+              + 7 * Integer.parseInt(Character.toString(pesel.charAt(6)))
+              + 9 * Integer.parseInt(Character.toString(pesel.charAt(7)))
+              + 1 * Integer.parseInt(Character.toString(pesel.charAt(8)))
+              + 3 * Integer.parseInt(Character.toString(pesel.charAt(9)))
         );
         sum %= 10;
         sum = 10 - sum;
         sum %= 10;
 
-        return (sum == Integer.parseInt(pesel.codePointAt(10)));
+        return (sum == Integer.parseInt(Character.toString(pesel.charAt(10))));
     }
 }
