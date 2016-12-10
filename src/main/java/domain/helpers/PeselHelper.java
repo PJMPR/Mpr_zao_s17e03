@@ -16,13 +16,13 @@ public class PeselHelper {
                 1 * Integer.parseInt(pesel.codePointAt(0))
               + 3 * Integer.parseInt(pesel.codePointAt(1))
               + 7 * Integer.parseInt(pesel.codePointAt(2))
-              + 9 * Integer.parseInt(.codePointAt(3))
-              + 1 * Integer.parseInt(.codePointAt(4))
-              + 3 * Integer.parseInt(.codePointAt(5))
-              + 7 * Integer.parseInt(.codePointAt(6))
-              + 9 * Integer.parseInt(.codePointAt(7))
-              + 1 * Integer.parseInt(.codePointAt(8))
-              + 3 * Integer.parseInt(.codePointAt(9))
+              + 9 * Integer.parseInt(pesel.codePointAt(3))
+              + 1 * Integer.parseInt(pesel.codePointAt(4))
+              + 3 * Integer.parseInt(pesel.codePointAt(5))
+              + 7 * Integer.parseInt(pesel.codePointAt(6))
+              + 9 * Integer.parseInt(pesel.codePointAt(7))
+              + 1 * Integer.parseInt(pesel.codePointAt(8))
+              + 3 * Integer.parseInt(pesel.codePointAt(9))
         );
         sum %= 10;
         sum = 10 - sum;
