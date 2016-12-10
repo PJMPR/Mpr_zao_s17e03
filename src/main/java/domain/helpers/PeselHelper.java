@@ -30,4 +30,21 @@ public class PeselHelper {
 
         return (sum == Integer.parseInt(Character.toString(pesel.charAt(10))));
     }
+
+    public enum Gender {
+        FEMALE,
+        MALE,
+        APACHE_HELICOPTER,
+        DINOSAUR,
+        UNKNOWN,
+        U_WOT_MATE
+    };
+
+    public static Date getDate(String pesel) {
+        return new Date();
+    }
+
+    public static Gender getGender(String pesel) {
+        return Gender.UNKNOWN;
+    }
 }
