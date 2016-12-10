@@ -13,16 +13,16 @@ public class PeselHelper {
 
     private boolean checkSum(String pesel) {
         int sum = (
-                1 * pesel[0]
-              + 3 * pesel[1]
-              + 7 * pesel[2]
-              + 9 * pesel[3]
-              + 1 * pesel[4]
-              + 3 * pesel[5]
-              + 7 * pesel[6]
-              + 9 * pesel[7]
-              + 1 * pesel[8]
-              + 3 * pesel[9]
+                1 * pesel.codePointAt(0)
+              + 3 * pesel.codePointAt(1)
+              + 7 * pesel.codePointAt(2)
+              + 9 * pesel.codePointAt(3)
+              + 1 * pesel.codePointAt(4)
+              + 3 * pesel.codePointAt(5)
+              + 7 * pesel.codePointAt(6)
+              + 9 * pesel.codePointAt(7)
+              + 1 * pesel.codePointAt(8)
+              + 3 * pesel.codePointAt(9)
         );
         sum %= 10;
         sum = 10 - sum;
