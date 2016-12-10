@@ -5,7 +5,18 @@ public class Person extends Entity implements IHaveId{
 	private int id;
 	private String name;
 	private String surname;
+	private String pesel;
 	private int age;
+	
+	
+	
+	public String getPesel() {
+		return pesel;
+	}
+	public void setPesel(String pesel) {
+		this.pesel = pesel;
+	}
+	
 	public String getName() {
 		return name;
 	}

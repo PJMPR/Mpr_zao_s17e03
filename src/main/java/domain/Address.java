@@ -1,6 +1,6 @@
 package domain;
 
-public class Address implements IHaveId {
+public class Address extends Entity implements IHaveId {
 
 	private int id;
 	private String city;
