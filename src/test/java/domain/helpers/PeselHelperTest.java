@@ -2,10 +2,12 @@ package domain.helpers;
 
 import static org.junit.Assert.*;
 
+import java.util.GregorianCalendar;
+
 import org.junit.Test;
 
 public class PeselHelperTest {
-    public static String CORRECT_PESEL = "43061213866";
+    public static String CORRECT_PESEL = "96061010469";
 	
 	@Test
 	public void CheckCorrectPeselTest() {
@@ -27,4 +29,18 @@ public class PeselHelperTest {
 		assertFalse(PeselHelper.checkPesel("43061213867"));
 	}
 
+	@Test
+	public void extractDateFromPeselTest(){
+		Date date = PeselHelper.getDate(CORRECT_PESEL);
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.set(1996, 6, 10);
+		assertEquals(date, calendar.getTime());
+	}
+	
+	@Test
+	public void extractGenderFromPeselTest(){
+		Gender gender = PeselHelper.getGender(CORRECT_PESEL);
+		assertEquals(Gender.FEMALE, gender);
+	}
+	
 }
