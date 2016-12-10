@@ -28,6 +28,6 @@ public class PeselHelper {
         sum = 10 - sum;
         sum %= 10;
 
-        return (sum == pesel[10]);
+        return (sum == pesel.codePointAt(10));
     }
 }
