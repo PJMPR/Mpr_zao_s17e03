@@ -14,7 +14,7 @@ public class PeselHelperTest {
 
 	@Test
 	public void CheckPeselWithInvalidCharactersTest() {
-		assertFalse(PeselHelper.checkPesel("adcsadfsadcsa"));
+		assertFalse(PeselHelper.checkPesel("A3O61213866"));
     }
 
 	@Test
