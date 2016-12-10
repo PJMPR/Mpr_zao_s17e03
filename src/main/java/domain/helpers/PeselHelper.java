@@ -5,6 +5,9 @@ public class PeselHelper {
         if (pesel.length() != 11) {
             return false;
         }
+        if (!pesel.matches("^[0-9]{11}$")) {
+            return false;
+        }
         return true;
     }
 }
