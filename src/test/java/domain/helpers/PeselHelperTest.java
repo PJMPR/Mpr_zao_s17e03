@@ -9,27 +9,22 @@ public class PeselHelperTest {
 	
 	@Test
 	public void CheckCorrectPeselTest() {
-		boolean isCorrect = PeselHelper.checkPesel(CORRECT_PESEL);
-		assertTrue(isCorrect);
+		assertTrue(PeselHelper.checkPesel(CORRECT_PESEL));
     }
 
 	@Test
 	public void CheckPeselWithInvalidCharactersTest() {
-		String peselWithChar = "adcsadfsadcsa";
-		isCorrect=PeselHelper.checkPesel(peselWithChar);
-		assertFalse(isCorrect);
+		assertFalse(PeselHelper.checkPesel("adcsadfsadcsa"));
     }
 
 	@Test
 	public void CheckPeselWithInvalidLengthTest() {
-		isCorrect = PeselHelper.checkPesel("213242353464576");
-		assertFalse(isCorrect);
+		assertFalse(PeselHelper.checkPesel("213242353464576"));
     }
 
 	@Test
 	public void CheckPeselWithInvalidChecksumTest() {
-		isCorrect = PeselHelper.checkPesel("43061213867");
-		assertFalse(isCorrect);
+		assertFalse(PeselHelper.checkPesel("43061213867"));
 	}
 
 }
