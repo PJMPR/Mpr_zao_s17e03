@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.mappers.IMapResultSetToEntity;
+import dao.uow.IUnitOfWork;
 import domain.Address;
+import domain.Entity;
 
 public class AddressRepository extends RepositoryBase<Address> {
 
 	protected AddressRepository(Connection conection,
-			IMapResultSetToEntity<Address> mapper) {
-		super(conection, mapper);
+			IMapResultSetToEntity<Address> mapper, IUnitOfWork uow) {
+		super(conection, mapper, uow);
 	}
 
 	protected void setUpInsert(Address address) throws SQLException {
@@ -49,8 +51,19 @@ public class AddressRepository extends RepositoryBase<Address> {
 		return null;
 	}
 	
-	@Override
 	protected void setUpUpdate(Address p) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void setUpInsert(Entity person) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void setUpUpdate(Entity p) throws SQLException {
 		// TODO Auto-generated method stub
 		
 	}
