@@ -37,10 +37,15 @@ public abstract class RepositoryBase<TEntity extends Entity>
 			IMapResultSetToEntity<TEntity> mapper, 
 			IUnitOfWork uow){
 		try {
-			connection.setAutoCommit(false);
+			this.connection = connection;
+			if(connection == null)
+				{
+					this.connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb");
+					uow.setConnection(this.connection);
+				}
+			this.connection.setAutoCommit(false);
 			this.uow = uow;
 			this.mapper = mapper;
-			this.connection = connection;
 			createTable = connection.createStatement();
 			createTableIfNotExists();
 			insert = connection.prepareStatement(getInsertQuery());

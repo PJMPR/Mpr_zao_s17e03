@@ -12,6 +12,7 @@ public class PersonMapper implements IMapResultSetToEntity<Person>{
 		result.setId(rs.getInt("id"));
 		result.setName(rs.getString("name"));
 		result.setSurname(rs.getString("surname"));
+		result.setAge(rs.getInt("age"));
 		return result;
 	}
 

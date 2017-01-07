@@ -28,7 +28,7 @@ public class PeselHelperTest {
 	public void CheckPeselWithInvalidChecksumTest() {
 		assertFalse(PeselHelper.checkPesel("43061213867"));
 	}
-
+/*
 	@Test
 	public void extractDateFromPeselTest(){
 		Date date = PeselHelper.getDate(CORRECT_PESEL);
@@ -42,5 +42,5 @@ public class PeselHelperTest {
 		Gender gender = PeselHelper.getGender(CORRECT_PESEL);
 		assertEquals(Gender.FEMALE, gender);
 	}
-	
+	*/
 }
