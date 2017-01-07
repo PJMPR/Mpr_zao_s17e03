@@ -74,4 +74,9 @@ public class UnitOfWork implements IUnitOfWork{
 		entities.put(entity, repository);
 	}
 
+	public void setConnection(Connection connection) {
+		this.connection = connection;
+		
+	}
+
 }
